@@ -90,8 +90,7 @@ def stop_all_legs():
     print("q - Stand up")
     print("t - Sit down")
     print("w - Walk forward")
-    print("e - Stop all legs")
-    print("Ctrl+C - Exit code loop")
+    print("Ctrl+C - Exit code loop and force stop the bot")
 
 def sit_down():
     print("Sitting down...")
@@ -133,6 +132,7 @@ def tripod_gait_forward():
     """Execute one cycle of tripod gait walking forward."""
     tripod1 = ['L1', 'L3', 'L5']
     tripod2 = ['L2', 'L4', 'L6']
+    alllegs = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6']
 
     # Define femur positions for lift/lower based on tripod group
     # For Tripod 1, servo commands are reversed for femur
@@ -147,30 +147,34 @@ def tripod_gait_forward():
 
     # Lift Tripod 1 legs and move them forward
     for leg in tripod1:
-        move_leg(leg, COXA_CENTER, FEMUR_UP_T1, TIBIA_EXTEND)
-    time.sleep(0.1)
+        move_leg(leg, COXA_CENTER, 2000, TIBIA_CENTER)
+    time.sleep(0.25)
     stop_all_legs()
     time.sleep(0.5)
 
 
-    # Push with Tripod 2 to move body forward
-    for leg in tripod2:
-        if leg in ['L4', 'L6']:
-          move_leg(leg, COXA_FORWARD, 1850 , 1750)
-        else:
-          move_leg(leg, 1900 , 1850 ,1750)
-        time.sleep(0.25)
-    stop_all_legs()
-    time.sleep(0.5)
+    # # Push with Tripod 2 to move body forward
+    # for leg in tripod2:
+    #     if(leg =='L2'):
+    #       move_leg(leg, 1400, 1900 , 1750)
+    #     elif (leg == 'L4'):
+    #       move_leg(leg, 2200 , 1900 ,1750)
+    #     elif(leg =='L6'):
+    #       move_leg(leg, 2200 , 2000 ,1750)
+    # time.sleep(0.25)
+    # stop_all_legs()
+    # time.sleep(0.2)
 
 
 
     # Lower Tripod 1
     for leg in tripod1:
-        if leg in ['L1', 'L3']:
-         move_leg(leg, COXA_FORWARD, FEMUR_DOWN_T1, TIBIA_TUCK)
-        else:
-         move_leg(leg, COXA_BACKWARD, FEMUR_DOWN_T1, TIBIA_TUCK)
+        if leg =='L1':
+         move_leg(leg, 2100, 1450, TIBIA_CENTER)
+        elif leg =='L3':
+         move_leg(leg, 2100, 1470, TIBIA_CENTER)
+        elif leg =='L5':
+         move_leg(leg, 1500, 1600, TIBIA_CENTER)
     time.sleep(0.25)
     stop_all_legs()
     time.sleep(0.5)
@@ -182,31 +186,53 @@ def tripod_gait_forward():
 
     # Lift Tripod 2 legs and move them forward
     for leg in tripod2:
-        move_leg(leg, COXA_CENTER, FEMUR_UP_T2, TIBIA_EXTEND)
-        time.sleep(0.25)
+        move_leg(leg, COXA_CENTER, FEMUR_UP_T2, TIBIA_CENTER)
+    time.sleep(0.25)
     stop_all_legs()
     time.sleep(0.5)
 
 
-    # Push with Tripod 1 to move body forward
-    for leg in tripod1:
-        if leg in ['L1', 'L3']:
-         move_leg(leg, COXA_BACKWARD, 1850 , 1750)
-        else:
-         move_leg(leg, COXA_FORWARD, 1850 , 1750)
-
-    time.sleep(0.25)
-    stop_all_legs()
+    # # Push with Tripod 1 to move body forward
+    # for leg in tripod1:
+    #     if leg=='L1':
+    #      move_leg(leg, 1440, 1725 , 1750)
+    #     elif leg=='L3':
+    #      move_leg(leg, 1430, 1740 , 1750)
+    #     elif leg=='L5':
+    #      move_leg(leg, 2100, 1735 , 1750)
+    # time.sleep(0.35)
+    # stop_all_legs()
+    # time.sleep(0.2)
 
 
     # Lower Tripod 2
     for leg in tripod2:
-        if leg in ['L4', 'L6']:
-         move_leg(leg, COXA_BACKWARD, FEMUR_DOWN_T2 , TIBIA_TUCK)
-        else:
-         move_leg(leg, 1500, FEMUR_DOWN_T2, TIBIA_TUCK)
-    time.sleep(0.4)
+        if (leg == 'L2'):
+            move_leg(leg, 1980, 2000 , TIBIA_CENTER)
+        elif(leg == 'L4'):
+            move_leg(leg, 1400, 2100 , TIBIA_CENTER)
+        elif(leg == 'L6'):
+            move_leg(leg, 1450, 1900 , TIBIA_CENTER) 
+    time.sleep(0.25)
     stop_all_legs()
+    time.sleep(0.5)
+
+    for leg in alllegs:
+        if leg == 'L1':
+            move_leg(leg, 1440, 1725 ,TIBIA_CENTER)
+        elif leg == 'L2':
+            move_leg(leg, 1400, 1850, TIBIA_CENTER )
+        elif leg == 'L3':
+            move_leg(leg, 1350, 1740 , TIBIA_CENTER)
+        elif leg == 'L4':
+            move_leg(leg, 2200, 1850 , TIBIA_CENTER)
+        elif leg == 'L5':
+            move_leg(leg, 2100, 1735 , TIBIA_CENTER)
+        elif leg == 'L6':
+            move_leg(leg, 2200, 1900 , TIBIA_CENTER)
+    time.sleep(0.25)
+    stop_all_legs()
+    time.sleep(0.5)
 
 
 # Main control loop
@@ -214,8 +240,7 @@ print("Controls:")
 print("q - Stand up")
 print("t - Sit down")
 print("w - Walk forward")
-print("e - Stop all legs")
-print("Ctrl+C - Exit code loop")
+print("Ctrl+C - Exit code loop and force stop the bot")
 
 try:
     while True:
@@ -226,11 +251,9 @@ try:
         elif key == 't':
             sit_down()
             stop_all_legs()
-        elif key == 'e':
-            stop_all_legs()
         elif key == 'w':
             cnt = 0 
-            while cnt < 3:
+            while cnt < 9:
                 print(f"Walking cycle {cnt+1}")
                 tripod_gait_forward()
                 cnt += 1

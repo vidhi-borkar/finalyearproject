@@ -43,11 +43,11 @@ COXA_CENTER = 1800    # Center position
 # Leg channels mapping: [PCA, coxa_ch, femur_ch, tibia_ch]
 legs = {
     'L1': [pca1, 0, 1, 2],
-    # 'L2': [pca1, 3, 4, 5],
-    # 'L3': [pca1, 6, 7, 8],
-    # 'L4': [pca2, 0, 1, 2],
-    # 'L5': [pca2, 3, 4, 5],
-    # 'L6': [pca2, 6, 7, 8]
+    'L2': [pca1, 3, 4, 5],
+    'L3': [pca1, 6, 7, 8],
+    'L4': [pca2, 0, 1, 2],
+    'L5': [pca2, 3, 4, 5],
+    'L6': [pca2, 6, 7, 8]
 }
 
 def stand_up():
@@ -129,8 +129,8 @@ def move_leg(leg_name, coxa_pos, femur_pos, tibia_pos):
 
 def tripod_gait_forward():
     """Execute one cycle of tripod gait walking forward."""
-    tripod1 = ['L1', 'L3', 'L5']
-    tripod2 = ['L2', 'L4', 'L6']
+    tripod1 = ['L3']
+    # tripod2 = ['L4']
 
     # Define femur positions for lift/lower based on tripod group
     # For Tripod 1, servo commands are reversed for femur
@@ -145,43 +145,44 @@ def tripod_gait_forward():
 
     # Lift Tripod 1 legs and move them forward
     for leg in tripod1:
-        move_leg(leg, COXA_CENTER, FEMUR_UP_T1, TIBIA_EXTEND)
+        move_leg(leg, 1800, 1800, 2000)
+        time.sleep(0.25)
     stop_all_legs()
 
     # Push with Tripod 2 to move body forward
-    for leg in tripod2:
-        move_leg(leg, COXA_CENTER, FEMUR_DOWN_T2, TIBIA_TUCK)
-    time.sleep(0.25)
-    stop_all_legs()
+    # for leg in tripod2:
+    #     move_leg(leg, 2100, FEMUR_CENTER, TIBIA_CENTER)
+    # time.sleep(0.25)
+    # stop_all_legs()
 
 
-    # Lower Tripod 1
-    for leg in tripod1:
-        move_leg(leg, COXA_CENTER, FEMUR_DOWN_T1, TIBIA_TUCK)
-    time.sleep(0.25)
-    stop_all_legs()
+    # # Lower Tripod 1
+    # for leg in tripod1:
+    #     move_leg(leg, COXA_CENTER, FEMUR_DOWN_T1, TIBIA_TUCK)
+    # time.sleep(0.25)
+    # stop_all_legs()
 
 
     # --- STEP 2: Tripod 2 moves forward while Tripod 1 provides support & propulsion ---
     print("Tripod Gait: Step 2")
 
     # Lift Tripod 2 legs and move them forward
-    for leg in tripod2:
-        move_leg(leg, COXA_CENTER, FEMUR_UP_T2, TIBIA_EXTEND)
-    stop_all_legs()
+    # for leg in tripod2:
+    #     move_leg(leg, COXA_CENTER, FEMUR_UP_T2, TIBIA_EXTEND)
+    # stop_all_legs()
 
-    # Push with Tripod 1 to move body forward
-    for leg in tripod1:
-        move_leg(leg, COXA_CENTER, FEMUR_DOWN_T1, TIBIA_TUCK)
-    time.sleep(0.25)
-    stop_all_legs()
+    # # Push with Tripod 1 to move body forward
+    # for leg in tripod1:
+    #     move_leg(leg, COXA_CENTER, FEMUR_DOWN_T1, TIBIA_TUCK)
+    # time.sleep(0.25)
+    # stop_all_legs()
 
 
     # Lower Tripod 2
-    for leg in tripod2:
-        move_leg(leg, COXA_CENTER, FEMUR_DOWN_T2, TIBIA_TUCK)
-    time.sleep(0.25)
-    stop_all_legs()
+    # for leg in tripod2:
+    #     move_leg(leg, COXA_CENTER, FEMUR_DOWN_T2, TIBIA_TUCK)
+    # time.sleep(0.25)
+    # stop_all_legs()
 
 
 # Main control loop
@@ -205,7 +206,7 @@ try:
             stop_all_legs()
         elif key == 'w':
             cnt = 0 
-            while cnt < 3:
+            while cnt < 1:
                 print(f"Walking cycle {cnt+1}")
                 tripod_gait_forward()
                 cnt += 1
